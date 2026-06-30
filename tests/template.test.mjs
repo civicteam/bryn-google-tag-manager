@@ -112,15 +112,16 @@ test("inject_script permission is scoped to the Civic Bryn origin", () => {
   );
 });
 
-test("access_globals grants write on the config global only", () => {
+test("access_globals grants read+write on the config global", () => {
   const globals = permission("access_globals");
   assert.ok(globals, "access_globals permission is declared");
   const keys = globals.instance.param.find((p) => p.key === "keys").value.listItem;
   // Map order is [key, read, write, execute] for both mapKey and mapValue.
   const entry = keys.find((k) => k.mapValue?.[0]?.string === CONFIG_GLOBAL);
   assert.ok(entry, `${CONFIG_GLOBAL} is in the access_globals keys`);
+  // setInWindow requires readwrite on the global (GTM rejects write-only).
+  assert.equal(entry.mapValue[1].boolean, true, "read is granted");
   assert.equal(entry.mapValue[2].boolean, true, "write is granted");
-  assert.equal(entry.mapValue[1].boolean, false, "read is not granted");
   assert.equal(entry.mapValue[3].boolean, false, "execute is not granted");
 });
 

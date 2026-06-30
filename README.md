@@ -57,7 +57,7 @@ The template requests only what it needs:
 | Permission       | Scope                       | Why                                            |
 | ---------------- | --------------------------- | ---------------------------------------------- |
 | `inject_script`  | `https://bryn.civic.com/*`  | Load the official Civic Bryn pixel.            |
-| `access_globals` | write `__brynPixel`         | Pass your Pixel reference to the pixel.        |
+| `access_globals` | read+write `__brynPixel`    | Pass your Pixel reference to the pixel.        |
 
 ## Using a Content Security Policy?
 
