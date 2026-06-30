@@ -1,0 +1,6 @@
+homepage: "https://www.civic.com/"
+documentation: "https://github.com/civicteam/bryn-google-tag-manager#readme"
+versions:
+  # Latest release
+  - sha: e7761516107834bdb54a9f0a166aae2225bb66db
+    changeNotes: Initial release of the Civic Bryn Pixel tag template.
