@@ -200,7 +200,61 @@ ___WEB_PERMISSIONS___
 
 ___TESTS___
 
-scenarios: []
+scenarios:
+- name: Injects the pixel and publishes the ref to the config global
+  code: |-
+    const mockData = { pixelRef: 'abc123' };
+    let injectedUrl;
+    mock('injectScript', (url, onSuccess) => {
+      injectedUrl = url;
+      onSuccess();
+    });
+    mock('setInWindow', (key, value, overrideExisting) => true);
+
+    runCode(mockData);
+
+    assertApi('setInWindow').wasCalledWith('__brynPixel', { ref: 'abc123' }, true);
+    assertThat(injectedUrl).isEqualTo('https://bryn.civic.com/pixel/pixel.js');
+    assertApi('gtmOnSuccess').wasCalled();
+- name: Includes the endpoint override when provided
+  code: |-
+    const mockData = { pixelRef: 'abc123', endpoint: 'https://bryn.civic.com/pixel' };
+    let publishedValue;
+    mock('setInWindow', (key, value, overrideExisting) => {
+      publishedValue = value;
+      return true;
+    });
+    mock('injectScript', (url, onSuccess) => {
+      onSuccess();
+    });
+
+    runCode(mockData);
+
+    assertThat(publishedValue).isEqualTo({ ref: 'abc123', endpoint: 'https://bryn.civic.com/pixel' });
+- name: Fails gracefully when permissions are denied
+  code: |-
+    const mockData = { pixelRef: 'abc123' };
+    mock('queryPermission', () => false);
+    let injected = false;
+    mock('injectScript', (url, onSuccess) => {
+      injected = true;
+    });
+
+    runCode(mockData);
+
+    assertThat(injected).isEqualTo(false);
+    assertApi('gtmOnFailure').wasCalled();
+- name: Calls gtmOnFailure when the pixel script fails to load
+  code: |-
+    const mockData = { pixelRef: 'abc123' };
+    mock('injectScript', (url, onSuccess, onFailure) => {
+      onFailure();
+    });
+    mock('setInWindow', (key, value, overrideExisting) => true);
+
+    runCode(mockData);
+
+    assertApi('gtmOnFailure').wasCalled();
 
 
 ___NOTES___

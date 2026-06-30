@@ -1,0 +1,10 @@
+{
+  "name": "bryn-google-tag-manager",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Google Tag Manager custom tag template for the Civic Bryn Pixel",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "node --test"
+  }
+}
