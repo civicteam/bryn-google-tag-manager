@@ -35,9 +35,9 @@ ___TEMPLATE_PARAMETERS___
   {
     "type": "TEXT",
     "name": "pixelRef",
-    "displayName": "Civic Bryn Pixel ID",
+    "displayName": "Civic Bryn Pixel reference",
     "simpleValueType": true,
-    "help": "Your Civic Bryn Pixel ID. You can find it in the Civic Bryn console under the website integration settings for your account.",
+    "help": "Your Civic Bryn Pixel reference. You can find it in the Civic Bryn console under the website integration settings for your account.",
     "valueValidators": [
       {
         "type": "NON_EMPTY",

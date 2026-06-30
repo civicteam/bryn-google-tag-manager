@@ -9,7 +9,7 @@ itself.
 
 When the tag fires, it:
 
-1. Publishes your **Civic Bryn Pixel ID** to a first-party config global
+1. Publishes your **Civic Bryn Pixel reference** to a first-party config global
    (`window.__brynPixel`).
 2. Loads the official Civic Bryn pixel from
    `https://bryn.civic.com/pixel/pixel.js`.
@@ -41,7 +41,7 @@ It does **not** read cookies, form fields, or any personal data from the page.
    **Civic Bryn Pixel**. (Until it is published to the gallery, import
    `template.tpl` via **Templates → New → Import**.)
 2. Create a new tag using the template.
-3. Enter your **Civic Bryn Pixel ID** (from the Civic Bryn console).
+3. Enter your **Civic Bryn Pixel reference** (from the Civic Bryn console).
 4. Set the trigger to **All Pages** (or whichever pages you want to track).
 5. **Submit** and publish the container.
 
@@ -57,7 +57,22 @@ The template requests only what it needs:
 | Permission       | Scope                       | Why                                            |
 | ---------------- | --------------------------- | ---------------------------------------------- |
 | `inject_script`  | `https://bryn.civic.com/*`  | Load the official Civic Bryn pixel.            |
-| `access_globals` | write `__brynPixel`         | Pass your Pixel ID to the pixel.               |
+| `access_globals` | write `__brynPixel`         | Pass your Pixel reference to the pixel.        |
+
+## Using a Content Security Policy?
+
+If your site sends a strict `Content-Security-Policy`, the browser will block the
+pixel until you allowlist the Civic Bryn origin in **two** directives:
+
+| Directive     | Add                        | Why                                                   |
+| ------------- | -------------------------- | ----------------------------------------------------- |
+| `script-src`  | `https://bryn.civic.com`   | Lets the page load `pixel.js`.                        |
+| `connect-src` | `https://bryn.civic.com`   | Lets the pixel send its beacon and fetch personalization. |
+
+This is the same one-host allowlist that other tag-based pixels (Meta, LinkedIn,
+TikTok) require. Installing via GTM avoids touching your site's markup, but the
+pixel still runs under your page's CSP — so a strict-CSP site must still make this
+one change. Sites without a CSP need no action.
 
 ## Privacy
 
